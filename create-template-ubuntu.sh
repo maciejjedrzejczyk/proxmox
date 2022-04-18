@@ -1,18 +1,34 @@
 #!/bin/sh
 
+
+# OS Images
 export QCOW_IMAGE=focal-server-cloudimg-amd64-current.img
-export CLIENT_CERT=id_rsa.pub
-export TEMPLATE_ID=9000
-export TEMPLATE_USERNAME=mj
-export TEMPLATE_PASSWORD=password
-export VM_ID=100
 export IMAGE_URL=https://cloud-images.ubuntu.com/focal/current
 export IMAGE_NAME=focal-server-cloudimg-amd64.img
 export IMAGE_PREP_NAME=focal-server-cloudimg-amd64-current.img
+
+# Setting up Template variables
+export TEMPLATE_ID=9000
+export TEMPLATE_NAME=ubuntu-template
+export CLIENT_CERT=id_rsa.pub
+export TEMPLATE_USERNAME=mj
+export TEMPLATE_PASSWORD=password
 export SCRIPT_DOCKER=install-docker-ubuntu.sh
 export SCRIPT_ENV=install-global.env.sh
+export TEMPLATE_VCPUS=2
+export TEMPLATE_MEMORY=2048
+
+# Setting up Proxmox Infrastructure variables
+export PROXMOX_INFRA_STORAGE=SSD
+
+# Setting up VM variables
+export VM1_ID=100
 export VM1_NAME=hlfdev
 export VM1_IP=192.168.0.9/24
+export VM1_VCPUS=2
+export VM1_SOCKETS=2
+export VM1_MEMORY=16384
+export VM1_STORAGE=40G
 
 # Destroy previous template
 qm destroy $TEMPLATE_ID
@@ -48,11 +64,11 @@ virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/$SCRIPT_EN
 virt-customize -a $QCOW_IMAGE --run-command "usermod -aG docker $TEMPLATE_USERNAME"
 
 # # Create a template
-qm create $TEMPLATE_ID --name "ubuntu-2004-cloudinit-template" --memory 4096 --cores 2 --net0 virtio,bridge=vmbr0
-qm importdisk $TEMPLATE_ID $QCOW_IMAGE SSD
-qm set $TEMPLATE_ID --scsihw virtio-scsi-pci --scsi0 SSD:vm-9000-disk-0
+qm create $TEMPLATE_ID --name "$TEMPLATE_NAME" --memory $TEMPLATE_MEMORY --cores $TEMPLATE_VCPUS --net0 virtio,bridge=vmbr0
+qm importdisk $TEMPLATE_ID $QCOW_IMAGE $PROXMOX_INFRA_STORAGE
+qm set $TEMPLATE_ID --scsihw virtio-scsi-pci --scsi0 $PROXMOX_INFRA_STORAGE:vm-$TEMPLATE_ID-disk-0
 qm set $TEMPLATE_ID --boot c --bootdisk scsi0
-qm set $TEMPLATE_ID --ide2 SSD:cloudinit
+qm set $TEMPLATE_ID --ide2 $PROXMOX_INFRA_STORAGE:cloudinit
 qm set $TEMPLATE_ID --serial0 socket --vga serial0
 qm set $TEMPLATE_ID --agent 1
 qm template $TEMPLATE_ID
@@ -62,8 +78,8 @@ qm stop $VM_ID && qm destroy $VM_ID
 qm clone $TEMPLATE_ID $VM1_ID --name $VM1_NAME
 #qm set $VM_ID --sshkey ~/.ssh/id_rsa.pub
 qm set $VM1_ID --ipconfig0 ip=$VM1_IP,gw=192.168.0.1
-qm set $VM1_ID --vcpus 2
-qm set $VM1_ID --sockets 2
-qm set $VM1_ID --memory 16384
-qm resize $VM1_ID scsi0 +40G
+qm set $VM1_ID --vcpus $VM1_VCPUS
+qm set $VM1_ID --sockets $VM1_SOCKETS
+qm set $VM1_ID --memory $VM1_MEMORY
+qm resize $VM1_ID scsi0 +$VM1_STORAGE
 qm start $VM1_ID
