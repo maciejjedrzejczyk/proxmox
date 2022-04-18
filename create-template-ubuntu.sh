@@ -14,7 +14,7 @@ export CLIENT_CERT=id_rsa.pub
 export TEMPLATE_USERNAME=mj
 export TEMPLATE_PASSWORD=password
 export SCRIPT_DOCKER=install-docker-ubuntu.sh
-export SCRIPT_ENV=install-global.env.sh
+export SCRIPT_ENV=install-global-env.sh
 export TEMPLATE_VCPUS=2
 export TEMPLATE_MEMORY=2048
 
@@ -82,5 +82,5 @@ qm set $VM1_ID --ipconfig0 ip=$VM1_IP,gw=192.168.0.1
 qm set $VM1_ID --vcpus $VM1_VCPUS
 qm set $VM1_ID --sockets $VM1_SOCKETS
 qm set $VM1_ID --memory $VM1_MEMORY
-qm resize $VM1_ID scsi0 +$VM1_STORAGE
+qm resize $VM1_ID scsi0 $VM1_STORAGE
 qm start $VM1_ID
