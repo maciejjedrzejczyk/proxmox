@@ -36,7 +36,7 @@ virt-customize -a $QCOW_IMAGE --run-command "sudo apt install resolvconf -y"
 virt-customize -a $QCOW_IMAGE --run-command "adduser $TEMPLATE_USERNAME --gecos 'First Last,RoomNumber,WorkPhone,HomePhone'"
 virt-customize -a $QCOW_IMAGE --run-command "echo "$TEMPLATE_USERNAME:$TEMPLATE_PASSWORD" | sudo chpasswd"
 virt-customize -a $QCOW_IMAGE --run-command "usermod -aG sudo $TEMPLATE_USERNAME"
-virt-customize -a $QCOW_IMAGE --ssh-inject mj:file:$CLIENT_CERT
+virt-customize -a $QCOW_IMAGE --ssh-inject $TEMPLATE_USERNAME:file:$CLIENT_CERT
 virt-customize -a $QCOW_IMAGE --copy-in docker.sh:/home/$TEMPLATE_USERNAME
 virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/docker.sh"
 virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/docker.sh"
