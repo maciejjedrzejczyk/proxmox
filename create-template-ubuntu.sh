@@ -35,7 +35,7 @@ qm destroy $TEMPLATE_ID
 
 # Delete previous image
 #rm focal-server-cloudimg-amd64.img
-rm $IMAGE_NAME
+rm $IMAGE_PREP_NAME
 
 # Download a new image
 wget -nc $IMAGE_URL/$IMAGE_NAME
