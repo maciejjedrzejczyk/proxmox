@@ -128,7 +128,7 @@ qm set $K8S_MASTER1_ID --vcpus $K8S_MASTER1_VCPUS
 qm set $K8S_MASTER1_ID --sockets $K8S_MASTER1_SOCKETS
 qm set $K8S_MASTER1_ID --memory $K8S_MASTER1_MEMORY
 qm resize $K8S_MASTER1_ID scsi0 $K8S_MASTER1_STORAGE
-sleep 120 && qm snapshot $K8S_MASTER1_ID cleanstate
+qm snapshot $K8S_MASTER1_ID cleanstate
 qm migrate $K8S_MASTER1_ID node02
 #qm start $K8S_MASTER1_ID
 
@@ -140,7 +140,7 @@ qm set $K8S_MASTER2_ID --vcpus $K8S_MASTER2_VCPUS
 qm set $K8S_MASTER2_ID --sockets $K8S_MASTER2_SOCKETS
 qm set $K8S_MASTER2_ID --memory $K8S_MASTER2_MEMORY
 qm resize $K8S_MASTER2_ID scsi0 $K8S_MASTER2_STORAGE
-sleep 120 && qm snapshot $K8S_MASTER2_ID cleanstate
+qm snapshot $K8S_MASTER2_ID cleanstate
 qm migrate $K8S_MASTER2_ID node02
 #qm start $K8S_MASTER2_ID
 
@@ -152,7 +152,7 @@ qm set $K8S_MASTER3_ID --vcpus $K8S_MASTER3_VCPUS
 qm set $K8S_MASTER3_ID --sockets $K8S_MASTER3_SOCKETS
 qm set $K8S_MASTER3_ID --memory $K8S_MASTER3_MEMORY
 qm resize $K8S_MASTER3_ID scsi0 $K8S_MASTER3_STORAGE
-sleep 120 && qm snapshot $K8S_MASTER3_ID cleanstate
+qm snapshot $K8S_MASTER3_ID cleanstate
 qm migrate $K8S_MASTER3_ID node02
 #qm start $K8S_MASTER3_ID
 
@@ -163,7 +163,7 @@ qm set $K8S_WORKER1_ID --vcpus $K8S_WORKER1_VCPUS
 qm set $K8S_WORKER1_ID --sockets $K8S_WORKER1_SOCKETS
 qm set $K8S_WORKER1_ID --memory $K8S_WORKER1_MEMORY
 qm resize $K8S_WORKER1_ID scsi0 $K8S_WORKER1_STORAGE
-sleep 120 && qm snapshot $K8S_WORKER1_ID cleanstate
+qm snapshot $K8S_WORKER1_ID cleanstate
 #qm migrate $K8S_WORKER1_ID node02
 #qm start $K8S_WORKER1_ID
 
@@ -174,7 +174,7 @@ qm set $K8S_WORKER2_ID --vcpus $K8S_WORKER2_VCPUS
 qm set $K8S_WORKER2_ID --sockets $K8S_WORKER2_SOCKETS
 qm set $K8S_WORKER2_ID --memory $K8S_WORKER2_MEMORY
 qm resize $K8S_WORKER2_ID scsi0 $K8S_WORKER2_STORAGE
-sleep 120 && qm snapshot $K8S_WORKER2_ID cleanstate
+qm snapshot $K8S_WORKER2_ID cleanstate
 #qm migrate $K8S_WORKER2_ID node02
 #qm start $K8S_WORKER2_ID
 
@@ -185,7 +185,7 @@ qm set $K8S_WORKER3_ID --vcpus $K8S_WORKER3_VCPUS
 qm set $K8S_WORKER3_ID --sockets $K8S_WORKER3_SOCKETS
 qm set $K8S_WORKER3_ID --memory $K8S_WORKER3_MEMORY
 qm resize $K8S_WORKER3_ID scsi0 $K8S_WORKER3_STORAGE
-sleep 120 && qm snapshot $K8S_WORKER3_ID cleanstate
+qm snapshot $K8S_WORKER3_ID cleanstate
 #qm migrate $K8S_WORKER3_ID node02
 #qm start $K8S_WORKER3_ID
 
