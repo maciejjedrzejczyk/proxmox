@@ -9,6 +9,8 @@ export VM_ID=100
 export IMAGE_URL=https://cloud-images.ubuntu.com/focal/current
 export IMAGE_NAME=focal-server-cloudimg-amd64.img
 export IMAGE_PREP_NAME=focal-server-cloudimg-amd64-current.img
+export SCRIPT_DOCKER=install-docker-ubuntu.sh
+export SCRIPT_ENV=install-docker-ubuntu.sh
 export VM1_NAME=hlfdev
 export VM1_IP=192.168.0.9/24
 
@@ -37,12 +39,12 @@ virt-customize -a $QCOW_IMAGE --run-command "adduser $TEMPLATE_USERNAME --gecos 
 virt-customize -a $QCOW_IMAGE --run-command "echo "$TEMPLATE_USERNAME:$TEMPLATE_PASSWORD" | sudo chpasswd"
 virt-customize -a $QCOW_IMAGE --run-command "usermod -aG sudo $TEMPLATE_USERNAME"
 virt-customize -a $QCOW_IMAGE --ssh-inject $TEMPLATE_USERNAME:file:$CLIENT_CERT
-virt-customize -a $QCOW_IMAGE --copy-in docker.sh:/home/$TEMPLATE_USERNAME
-virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/docker.sh"
-virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/docker.sh"
-virt-customize -a $QCOW_IMAGE --copy-in global.sh:/home/$TEMPLATE_USERNAME
-virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/global.sh"
-virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/global.sh"
+virt-customize -a $QCOW_IMAGE --copy-in $SCRIPT_DOCKER:/home/$TEMPLATE_USERNAME
+virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/$SCRIPT_DOCKER"
+virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/$SCRIPT_DOCKER"
+virt-customize -a $QCOW_IMAGE --copy-in $SCRIPT_ENV:/home/$TEMPLATE_USERNAME
+virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/$SCRIPT_ENV"
+virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/$SCRIPT_ENV"
 virt-customize -a $QCOW_IMAGE --run-command "usermod -aG docker $TEMPLATE_USERNAME"
 
 # # Create a template
