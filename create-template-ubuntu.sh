@@ -10,7 +10,7 @@ export IMAGE_URL=https://cloud-images.ubuntu.com/focal/current
 export IMAGE_NAME=focal-server-cloudimg-amd64.img
 export IMAGE_PREP_NAME=focal-server-cloudimg-amd64-current.img
 export SCRIPT_DOCKER=install-docker-ubuntu.sh
-export SCRIPT_ENV=install-docker-ubuntu.sh
+export SCRIPT_ENV=install-global.env.sh
 export VM1_NAME=hlfdev
 export VM1_IP=192.168.0.9/24
 
