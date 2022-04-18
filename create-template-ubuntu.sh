@@ -31,6 +31,7 @@ export VM1_MEMORY=16384
 export VM1_STORAGE=40G
 
 # Destroy previous template
+qm stop $VM1_ID && qm destroy $VM1_ID
 qm destroy $TEMPLATE_ID
 
 # Delete previous image
@@ -73,7 +74,7 @@ qm set $TEMPLATE_ID --serial0 socket --vga serial0
 qm set $TEMPLATE_ID --agent 1
 qm template $TEMPLATE_ID
 
-qm stop $VM_ID && qm destroy $VM_ID
+
 
 qm clone $TEMPLATE_ID $VM1_ID --name $VM1_NAME
 #qm set $VM_ID --sshkey ~/.ssh/id_rsa.pub
