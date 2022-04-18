@@ -129,7 +129,7 @@ qm set $K8S_MASTER1_ID --sockets $K8S_MASTER1_SOCKETS
 qm set $K8S_MASTER1_ID --memory $K8S_MASTER1_MEMORY
 qm resize $K8S_MASTER1_ID scsi0 $K8S_MASTER1_STORAGE
 qm snapshot $K8S_MASTER1_ID cleanstate
-qm migrate $K8S_MASTER1_ID node02
+#qm migrate $K8S_MASTER1_ID node02
 #qm start $K8S_MASTER1_ID
 
 
@@ -141,7 +141,7 @@ qm set $K8S_MASTER2_ID --sockets $K8S_MASTER2_SOCKETS
 qm set $K8S_MASTER2_ID --memory $K8S_MASTER2_MEMORY
 qm resize $K8S_MASTER2_ID scsi0 $K8S_MASTER2_STORAGE
 qm snapshot $K8S_MASTER2_ID cleanstate
-qm migrate $K8S_MASTER2_ID node02
+#qm migrate $K8S_MASTER2_ID node02
 #qm start $K8S_MASTER2_ID
 
 
@@ -153,7 +153,7 @@ qm set $K8S_MASTER3_ID --sockets $K8S_MASTER3_SOCKETS
 qm set $K8S_MASTER3_ID --memory $K8S_MASTER3_MEMORY
 qm resize $K8S_MASTER3_ID scsi0 $K8S_MASTER3_STORAGE
 qm snapshot $K8S_MASTER3_ID cleanstate
-qm migrate $K8S_MASTER3_ID node02
+#qm migrate $K8S_MASTER3_ID node02
 #qm start $K8S_MASTER3_ID
 
 qm clone $TEMPLATE_ID $K8S_WORKER1_ID --name $K8S_WORKER1_NAME
@@ -164,7 +164,7 @@ qm set $K8S_WORKER1_ID --sockets $K8S_WORKER1_SOCKETS
 qm set $K8S_WORKER1_ID --memory $K8S_WORKER1_MEMORY
 qm resize $K8S_WORKER1_ID scsi0 $K8S_WORKER1_STORAGE
 qm snapshot $K8S_WORKER1_ID cleanstate
-#qm migrate $K8S_WORKER1_ID node02
+##qm migrate $K8S_WORKER1_ID node02
 #qm start $K8S_WORKER1_ID
 
 qm clone $TEMPLATE_ID $K8S_WORKER2_ID --name $K8S_WORKER2_NAME
@@ -175,7 +175,7 @@ qm set $K8S_WORKER2_ID --sockets $K8S_WORKER2_SOCKETS
 qm set $K8S_WORKER2_ID --memory $K8S_WORKER2_MEMORY
 qm resize $K8S_WORKER2_ID scsi0 $K8S_WORKER2_STORAGE
 qm snapshot $K8S_WORKER2_ID cleanstate
-#qm migrate $K8S_WORKER2_ID node02
+##qm migrate $K8S_WORKER2_ID node02
 #qm start $K8S_WORKER2_ID
 
 qm clone $TEMPLATE_ID $K8S_WORKER3_ID --name $K8S_WORKER3_NAME
@@ -186,7 +186,7 @@ qm set $K8S_WORKER3_ID --sockets $K8S_WORKER3_SOCKETS
 qm set $K8S_WORKER3_ID --memory $K8S_WORKER3_MEMORY
 qm resize $K8S_WORKER3_ID scsi0 $K8S_WORKER3_STORAGE
 qm snapshot $K8S_WORKER3_ID cleanstate
-#qm migrate $K8S_WORKER3_ID node02
+##qm migrate $K8S_WORKER3_ID node02
 #qm start $K8S_WORKER3_ID
 
 
