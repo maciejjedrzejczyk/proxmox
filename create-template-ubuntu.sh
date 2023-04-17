@@ -12,6 +12,7 @@ export TEMPLATE_ID=9000
 export TEMPLATE_NAME=ubuntu-2204lts-template
 export PROXMOX_CLIENT_CERT=/root/.ssh/id_rsa.pub
 export MACBOOK_CLIENT_CERT=/root/proxmox/id_rsa.pub
+export CLOUDCFG=cloud.cfg
 export TEMPLATE_USERNAME=mj
 export TEMPLATE_PASSWORD=password
 # export SCRIPT_DOCKER=install-docker-ubuntu.sh
@@ -48,6 +49,7 @@ qemu-img resize $QCOW_IMAGE +10G
 
 # Customize downloaded image
 virt-customize -a $QCOW_IMAGE --install qemu-guest-agent
+virt-customize -a $QCOW_IMAGE --copy-in $CLOUDCFG:/etc/cloud
 # virt-customize -a $QCOW_IMAGE --ssh-inject root:file:$PROXMOX_CLIENT_CERT
 # virt-customize -a $QCOW_IMAGE --ssh-inject root:file:$MACBOOK_CLIENT_CERT
 # virt-customize -a $QCOW_IMAGE --root-password "$TEMPLATE_PASSWORD"
