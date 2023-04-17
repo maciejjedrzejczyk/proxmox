@@ -1,11 +1,12 @@
 #!/bin/sh
 
 
-# OS Images
-export QCOW_IMAGE=jammy-server-cloudimg-amd64-current.img
-export IMAGE_URL=https://cloud-images.ubuntu.com/jammy/current
-export IMAGE_NAME=jammy-server-cloudimg-amd64.img
-export IMAGE_PREP_NAME=jammy-server-cloudimg-amd64-current.img
+# Declare os images that will be used for this template
+export RELEASE=jammy
+export QCOW_IMAGE=$RELEASE-server-cloudimg-amd64-current.img
+export IMAGE_URL=https://cloud-images.ubuntu.com/$RELEASE/current
+export IMAGE_NAME=$RELEASE-server-cloudimg-amd64.img
+export IMAGE_PREP_NAME=$RELEASE-server-cloudimg-amd64-current.img
 
 # Setting up Template variables
 export TEMPLATE_ID=9000
@@ -32,15 +33,13 @@ export VM1_SOCKETS=2
 export VM1_MEMORY=6092
 export VM1_STORAGE=40G
 
-# Destroy previous template
+# Destroy previous template, modified image and associated ssh keys on Proxmox host
 qm stop $VM1_ID && qm destroy $VM1_ID
 qm destroy $TEMPLATE_ID
-
-# Delete previous image
-#rm jammy-server-cloudimg-amd64.img
+ssh-keygen -f "/root/.ssh/known_hosts" -R "192.168.1.110"
 rm $IMAGE_PREP_NAME
 
-# Download a new image
+# Download a new image onto Proxmox host
 wget -nc $IMAGE_URL/$IMAGE_NAME
 cp $IMAGE_NAME $IMAGE_PREP_NAME
 
@@ -67,9 +66,9 @@ virt-customize -a $QCOW_IMAGE --ssh-inject $TEMPLATE_USERNAME:file:$MACBOOK_CLIE
 # virt-customize -a $QCOW_IMAGE --copy-in $SCRIPT_ENV:/home/$TEMPLATE_USERNAME
 # virt-customize -a $QCOW_IMAGE --run-command "chmod +x /home/$TEMPLATE_USERNAME/$SCRIPT_ENV"
 # virt-customize -a $QCOW_IMAGE --run-command "/home/$TEMPLATE_USERNAME/$SCRIPT_ENV"
-virt-customize -a $QCOW_IMAGE --run-command "usermod -aG docker $TEMPLATE_USERNAME"
+# virt-customize -a $QCOW_IMAGE --run-command "usermod -aG docker $TEMPLATE_USERNAME"
 
-# # Create a template
+# Create a template
 qm create $TEMPLATE_ID --name "$TEMPLATE_NAME" --memory $TEMPLATE_MEMORY --cores $TEMPLATE_VCPUS --net0 virtio,bridge=vmbr0
 qm importdisk $TEMPLATE_ID $QCOW_IMAGE $PROXMOX_INFRA_STORAGE
 qm set $TEMPLATE_ID --scsihw virtio-scsi-pci --scsi0 $PROXMOX_INFRA_STORAGE:vm-$TEMPLATE_ID-disk-0
@@ -80,7 +79,7 @@ qm set $TEMPLATE_ID --agent 1
 qm template $TEMPLATE_ID
 
 
-
+# Clone a template to a VM
 qm clone $TEMPLATE_ID $VM1_ID --name $VM1_NAME
 #qm set $VM_ID --sshkey ~/.ssh/id_rsa.pub
 qm set $VM1_ID --ipconfig0 ip=$VM1_IP,gw=192.168.1.1
@@ -89,4 +88,4 @@ qm set $VM1_ID --sockets $VM1_SOCKETS
 qm set $VM1_ID --memory $VM1_MEMORY
 qm resize $VM1_ID scsi0 $VM1_STORAGE
 qm start $VM1_ID
-sleep 120 && qm snapshot $VM1_ID cleanstate
+# sleep 120 && qm snapshot $VM1_ID cleanstate
